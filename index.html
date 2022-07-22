@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.css"
+    />
+    <style></style>
+  </head>
+  <body>
+    <h1 id="title">Movies For You!</h1>
+    <form action="">
+      <div class="formFix">
+        Enter movie title:
+        <input type="text" id="movie" required/>
+      </div>
+
+      <div class="formFix">
+        Enter movie rating:
+        <input type="number" id="rating" min="1" max="10" required/>
+      </div class="formFix">
+      <input type="button" value="Submit!"  onclick="addMovie()"/>
+      <br>
+      <select id="movieSort" onChange="sortMovie(this)">
+        <option value="" disabled selected>Sort By</option>
+        <option value="Title">Title</option>
+        <option value="RatingLow">Rating Low:High</option>
+        <option value="RatingHigh">Rating High:Low</option>
+      </select>
+    </form>
+
+<div>
+ <ul id="movieList">
+ </ul>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script>
+      // Add your code here!
+function addMovie (evt){
+    let newMovie = captureVals();
+    movieListings.push(newMovie);
+    clearInput();
+    appendMovie(newMovie);
+
+}
+
+function captureVals (){
+    let movie = {
+        movieName: $('#movie').val(),
+        movieRating: $('#rating').val()
+    }
+
+    return movie;
+}
+
+function appendMovie (movie){
+    $('#movieList').append('<li>' + movie.movieName + '(' + movie.movieRating + ') <button onclick="removeMovie(event)">x</button></li>');
+}
+
+function clearInput() {
+    $('#movie').val('');
+    $('#rating').val('');
+}
+
+function removeMovie(evt) {
+    evt.target.parentElement.remove();
+}
+
+function sortMovie(type) {
+    let sortType = type.value;
+
+    if (sortType == 'Title') {
+        sortTitle();
+        console.log('movieListing-Title: ', movieListings);
+    } else if (sortType == 'RatingLow') {
+        sortRatingLow();
+        console.log('movieListing-RatingLow: ', movieListings);
+    } else {
+        sortRatingHigh();
+        console.log('movieListing-sortRatingHigh: ', movieListings);
+    }
+
+    $('#movieList').empty();
+    
+    movieListings.forEach(movie => {
+        $('#movieList').append('<li>' + movie.movieName + '(' + movie.movieRating + ') <button onclick="removeMovie(event)">x</button></li>');
+    });
+}
+
+function sortTitle() {
+    movieListings.sort((a, b) => (a.movieName > b.movieName) ? 1 : -1);
+}
+
+function sortRatingLow() {
+    movieListings.sort((a, b) => (a.movieRating > b.movieRating) ? 1 : -1);
+}
+
+function sortRatingHigh() {
+    movieListings.sort((a, b) => (a.movieRating > b.movieRating) ? -1 : 1);
+}
+
+let movieListings = [];
+    </script>
+  </body>
+</html>
